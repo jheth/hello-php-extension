@@ -7,6 +7,10 @@
 
 static function_entry hello_functions[] = {
     PHP_FE(hello_world, NULL)
+    PHP_FE(hello_long, NULL)
+    PHP_FE(hello_double, NULL)
+    PHP_FE(hello_bool, NULL)
+    PHP_FE(hello_null, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -34,4 +38,24 @@ ZEND_GET_MODULE(hello)
 PHP_FUNCTION(hello_world)
 {
     RETURN_STRING("Hello World", 1);
+}
+
+PHP_FUNCTION(hello_long)
+{
+    RETURN_LONG(42);
+}
+
+PHP_FUNCTION(hello_double)
+{
+    RETURN_DOUBLE(3.1415926535);
+}
+
+PHP_FUNCTION(hello_bool)
+{
+    RETURN_BOOL(1);
+}
+
+PHP_FUNCTION(hello_null)
+{
+    RETURN_NULL();
 }
