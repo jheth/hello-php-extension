@@ -106,14 +106,16 @@ PHP_FUNCTION(hello_null)
 
 PHP_FUNCTION(hello_greetme)
 {
-    char *name;
-    int name_len;
+    zval *zname;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &name, &name_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &zname) == FAILURE) {
         RETURN_NULL();
     }
 
-    php_printf("Hello %s", name);
+    convert_to_string(zname);
+    php_printf("Hello ");
+    PHPWRITE(Z_STRVAL_P(zname), Z_STRLEN_P(zname));
+    php_printf("\n");
 
     RETURN_TRUE;
 }
