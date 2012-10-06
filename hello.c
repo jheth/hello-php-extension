@@ -19,6 +19,7 @@ static function_entry hello_functions[] = {
     PHP_FE(hello_array, NULL)
     PHP_FE(hello_array_strings, NULL)
     PHP_FE(hello_get_global_var, NULL)
+    PHP_FE(hello_set_local_var, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -225,4 +226,22 @@ PHP_FUNCTION(hello_get_global_var)
 
     *return_value = **varvalue;
     zval_copy_ctor(return_value);
+}
+
+PHP_FUNCTION(hello_set_local_var)
+{
+    zval *newvar;
+    char *varname;
+    int varname_len;
+    zval *value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sz", &varname, &varname_len, &value) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    ALLOC_INIT_ZVAL(newvar);
+    *newvar = *value;
+    zval_copy_ctor(newvar);
+    zend_hash_add(EG(active_symbol_table), varname, varname_len + 1, &newvar, sizeof(zval*), NULL);
+
+    RETURN_TRUE;
 }

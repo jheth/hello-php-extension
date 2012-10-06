@@ -75,3 +75,8 @@ Working with $GLOBALS:
     echo hello_get_global_var('test');
     echo hello_get_global_var('none');
 
+Setting local variables:
+
+    <?php
+    hello_set_local_var('test', 'Greetings');
+    echo "$test\n";
