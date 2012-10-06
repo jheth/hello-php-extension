@@ -24,3 +24,12 @@ php -c php.ini -r "echo hello_double();"
 
 php -c php.ini -r "var_dump( hello_null() );"  
 NULL
+
+php -c php.ini -r "hello_greetme('Joe');"  
+Hello Joe
+
+php -c php.ini -r "echo hello_add(2, 4.1);"  
+6.1
+
+php -c php.ini -r "echo hello_add(2, 4.1, true);"  
+6

@@ -14,6 +14,8 @@ static function_entry hello_functions[] = {
     PHP_FE(hello_double, NULL)
     PHP_FE(hello_bool, NULL)
     PHP_FE(hello_null, NULL)
+    PHP_FE(hello_greetme, NULL)
+    PHP_FE(hello_add, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -100,4 +102,35 @@ PHP_FUNCTION(hello_bool)
 PHP_FUNCTION(hello_null)
 {
     RETURN_NULL();
+}
+
+PHP_FUNCTION(hello_greetme)
+{
+    char *name;
+    int name_len;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &name, &name_len) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    php_printf("Hello %s", name);
+
+    RETURN_TRUE;
+}
+
+PHP_FUNCTION(hello_add)
+{
+    long a;
+    double b;
+    zend_bool return_long = 0;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ld|b", &a, &b, &return_long) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    if (return_long) {
+        RETURN_LONG(a + b);
+    } else {
+        RETURN_DOUBLE(a + b);
+    }
 }

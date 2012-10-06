@@ -28,6 +28,8 @@ PHP_FUNCTION(hello_long);
 PHP_FUNCTION(hello_double);
 PHP_FUNCTION(hello_bool);
 PHP_FUNCTION(hello_null);
+PHP_FUNCTION(hello_greetme);
+PHP_FUNCTION(hello_add);
 
 extern zend_module_entry hello_module_entry;
 #define phpext_hello_prt &hello_module_entry
