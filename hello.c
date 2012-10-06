@@ -16,6 +16,7 @@ static function_entry hello_functions[] = {
     PHP_FE(hello_null, NULL)
     PHP_FE(hello_greetme, NULL)
     PHP_FE(hello_add, NULL)
+    PHP_FE(hello_array, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -135,4 +136,28 @@ PHP_FUNCTION(hello_add)
     } else {
         RETURN_DOUBLE(a + b);
     }
+}
+
+PHP_FUNCTION(hello_array)
+{
+    char *mystr;
+    zval *mysubarray;
+
+    array_init(return_value);
+
+    add_index_long(return_value, 42, 123);
+
+    add_next_index_string(return_value, "I should now be found at index 43", 1);
+
+    add_next_index_stringl(return_value, "I'm at 44!", 10, 1);
+
+    mystr = estrdup("Forty Five");
+    add_next_index_string(return_value, mystr, 0);
+
+    add_assoc_double(return_value, "pi", 3.1415926535);
+
+    ALLOC_INIT_ZVAL(mysubarray);
+    array_init(mysubarray);
+    add_next_index_string(mysubarray, "hello", 1);
+    add_assoc_zval(return_value, "subarray", mysubarray);
 }

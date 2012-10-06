@@ -30,6 +30,7 @@ PHP_FUNCTION(hello_bool);
 PHP_FUNCTION(hello_null);
 PHP_FUNCTION(hello_greetme);
 PHP_FUNCTION(hello_add);
+PHP_FUNCTION(hello_array);
 
 extern zend_module_entry hello_module_entry;
 #define phpext_hello_prt &hello_module_entry

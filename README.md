@@ -38,3 +38,24 @@ php -c php.ini -r "echo hello_add(2, 4.1);"
 
 php -c php.ini -r "echo hello_add(2, 4.1, true);"  
 6
+
+php -c php.ini -r "var_dump(hello_array());"  
+
+    array(6) {
+      [42]=>
+      int(123)
+      [43]=>
+      string(33) "I should now be found at index 43"
+      [44]=>
+      string(10) "I'm at 44!"
+      [45]=>
+      string(10) "Forty Five"
+      ["pi"]=>
+      float(3.1415926535)
+      ["subarray"]=>
+      array(1) {
+        [0]=>
+        string(5) "hello"
+      }
+    }
+
