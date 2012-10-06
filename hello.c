@@ -36,11 +36,14 @@ zend_module_entry hello_module_entry = {
 
 PHP_INI_BEGIN()
 PHP_INI_ENTRY("hello.greeting", "Hello World", PHP_INI_ALL, NULL)
+STD_PHP_INI_ENTRY("hello.direction", "1", PHP_INI_ALL,
+    OnUpdateBool, direction, zend_hello_globals, hello_globals)
 PHP_INI_END()
 
 static void
 php_hello_init_globals(zend_hello_globals *hello_globals)
 {
+    hello_globals->direction = 1;
 }
 
 PHP_RINIT_FUNCTION(hello)
@@ -76,7 +79,11 @@ PHP_FUNCTION(hello_world)
 
 PHP_FUNCTION(hello_long)
 {
-    HELLO_G(counter)++;
+    if (HELLO_G(direction)) {
+        HELLO_G(counter)++;
+    } else {
+        HELLO_G(counter)--;
+    }
 
     RETURN_LONG(HELLO_G(counter));
 }
