@@ -18,6 +18,7 @@ static function_entry hello_functions[] = {
     PHP_FE(hello_add, NULL)
     PHP_FE(hello_array, NULL)
     PHP_FE(hello_array_strings, NULL)
+    PHP_FE(hello_get_global_var, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -205,4 +206,23 @@ PHP_FUNCTION(hello_array_strings)
 
     }
     RETURN_TRUE;
+}
+
+PHP_FUNCTION(hello_get_global_var)
+{
+    char *varname;
+    int varname_len;
+    zval **varvalue;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &varname, &varname_len) == FAILURE) {
+        RETURN_NULL();
+    }
+
+    if (zend_hash_find(&EG(symbol_table), varname, varname_len + 1, (void**)&varvalue) == FAILURE) {
+        php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Undefined variable: %s", varname);
+        RETURN_NULL();
+    }
+
+    *return_value = **varvalue;
+    zval_copy_ctor(return_value);
 }

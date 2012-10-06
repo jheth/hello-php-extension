@@ -62,10 +62,14 @@ php -c php.ini -r "var_dump(hello_array());"
 
 Show hello_array_strings:  
     <?php
-
     $a = array('foo', 123);
     var_dump($a);
     hello_array_strings($a);
     var_dump($a);
 
-    ?>
+Working with $GLOBALS:  
+    <?php
+    $GLOBALS['test'] = 'Joe';
+    echo hello_get_global_var('test');
+    echo hello_get_global_var('none');
+
