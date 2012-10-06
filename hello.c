@@ -183,10 +183,14 @@ PHP_FUNCTION(hello_array_strings)
         zend_hash_get_current_data_ex(arr_hash, (void**) &data, &pointer) == SUCCESS;
         zend_hash_move_forward_ex(arr_hash, &pointer)) {
 
-        if (Z_TYPE_PP(data) == IS_STRING) {
-            PHPWRITE(Z_STRVAL_PP(data), Z_STRLEN_PP(data));
-            php_printf("\n");
-        }
+        zval temp;
+
+        temp = **data;
+        zval_copy_ctor(&temp);
+        convert_to_string(&temp);
+        PHPWRITE(Z_STRVAL(temp), Z_STRLEN(temp));
+        php_printf("\n");
+        zval_dtor(&temp);
 
     }
     RETURN_TRUE;
