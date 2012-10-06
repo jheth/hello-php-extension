@@ -1,12 +1,12 @@
-# Tutorial 
-
-http://devzone.zend.com/303/extension-writing-part-i-introduction-to-php-and-zend/
-
 # Compile
 
 phpize  
 ./configure --enable-hello  
 make  
+
+# Tutorial 1
+
+http://devzone.zend.com/303/extension-writing-part-i-introduction-to-php-and-zend/
 
 # Run
 
@@ -24,6 +24,11 @@ php -c php.ini -r "echo hello_double();"
 
 php -c php.ini -r "var_dump( hello_null() );"  
 NULL
+
+
+# Tutorial 2
+
+http://devzone.zend.com/317/extension-writing-part-ii-parameters-arrays-and-zvals/
 
 php -c php.ini -r "hello_greetme('Joe');"  
 Hello Joe
