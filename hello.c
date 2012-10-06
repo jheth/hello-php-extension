@@ -184,6 +184,17 @@ PHP_FUNCTION(hello_array_strings)
         zend_hash_move_forward_ex(arr_hash, &pointer)) {
 
         zval temp;
+        char *key;
+        int key_len;
+        long index;
+
+        if (zend_hash_get_current_key_ex(arr_hash, &key, &key_len, &index, 0, &pointer) == HASH_KEY_IS_STRING) {
+            PHPWRITE(key, key_len);
+        } else {
+            php_printf("%ld", index);
+        }
+
+        php_printf(" => ");
 
         temp = **data;
         zval_copy_ctor(&temp);

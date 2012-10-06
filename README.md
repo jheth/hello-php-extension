@@ -59,3 +59,13 @@ php -c php.ini -r "var_dump(hello_array());"
       }
     }
 
+
+Show hello_array_strings:  
+    <?php
+
+    $a = array('foo', 123);
+    var_dump($a);
+    hello_array_strings($a);
+    var_dump($a);
+
+    ?>
