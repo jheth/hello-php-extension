@@ -6,6 +6,8 @@
 #include "php_ini.h"
 #include "php_hello.h"
 
+ZEND_DECLARE_MODULE_GLOBALS(hello)
+
 static function_entry hello_functions[] = {
     PHP_FE(hello_world, NULL)
     PHP_FE(hello_long, NULL)
@@ -23,7 +25,7 @@ zend_module_entry hello_module_entry = {
     hello_functions,
     PHP_MINIT(hello),
     PHP_MSHUTDOWN(hello),
-    NULL,
+    PHP_RINIT(hello),
     NULL,
     NULL,
 #if ZEND_MODULE_API_NO >= 20010901
@@ -36,8 +38,21 @@ PHP_INI_BEGIN()
 PHP_INI_ENTRY("hello.greeting", "Hello World", PHP_INI_ALL, NULL)
 PHP_INI_END()
 
+static void
+php_hello_init_globals(zend_hello_globals *hello_globals)
+{
+}
+
+PHP_RINIT_FUNCTION(hello)
+{
+    HELLO_G(counter) = 0;
+
+    return SUCCESS;
+}
+
 PHP_MINIT_FUNCTION(hello)
 {
+    ZEND_INIT_MODULE_GLOBALS(hello, php_hello_init_globals, NULL);
     REGISTER_INI_ENTRIES();
 
     return SUCCESS;
@@ -61,7 +76,9 @@ PHP_FUNCTION(hello_world)
 
 PHP_FUNCTION(hello_long)
 {
-    RETURN_LONG(42);
+    HELLO_G(counter)++;
+
+    RETURN_LONG(HELLO_G(counter));
 }
 
 PHP_FUNCTION(hello_double)
