@@ -34,14 +34,17 @@ zend_module_entry hello_module_entry = {
     STANDARD_MODULE_PROPERTIES
 };
 
+#ifdef COMPILE_DL_HELLO
+ZEND_GET_MODULE(hello)
+#endif
+
 PHP_INI_BEGIN()
-PHP_INI_ENTRY("hello.greeting", "Hello World", PHP_INI_ALL, NULL)
-STD_PHP_INI_ENTRY("hello.direction", "1", PHP_INI_ALL,
-    OnUpdateBool, direction, zend_hello_globals, hello_globals)
+    PHP_INI_ENTRY("hello.greeting", "Hello World", PHP_INI_ALL, NULL)
+    STD_PHP_INI_ENTRY("hello.direction", "1", PHP_INI_ALL,
+        OnUpdateBool, direction, zend_hello_globals, hello_globals)
 PHP_INI_END()
 
-static void
-php_hello_init_globals(zend_hello_globals *hello_globals)
+static void php_hello_init_globals(zend_hello_globals *hello_globals)
 {
     hello_globals->direction = 1;
 }
@@ -67,10 +70,6 @@ PHP_MSHUTDOWN_FUNCTION(hello)
 
     return SUCCESS;
 }
-
-#ifdef COMPILE_DL_HELLO
-ZEND_GET_MODULE(hello)
-#endif
 
 PHP_FUNCTION(hello_world)
 {
