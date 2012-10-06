@@ -4,6 +4,9 @@
 #define PHP_HELLO_WORLD_VERSION "1.0"
 #define PHP_HELLO_WORLD_EXTNAME "hello"
 
+PHP_MINIT_FUNCTION(hello);
+PHP_MSHUTDOWN_FUNCTION(hello);
+
 PHP_FUNCTION(hello_world);
 PHP_FUNCTION(hello_long);
 PHP_FUNCTION(hello_double);
