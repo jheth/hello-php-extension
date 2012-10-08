@@ -29,6 +29,7 @@ NULL
 # Tutorial 2
 
 http://devzone.zend.com/317/extension-writing-part-ii-parameters-arrays-and-zvals/
+http://devzone.zend.com/318/extension-writing-part-ii-parameters-arrays-and-zvals-continued/
 
 php -c php.ini -r "hello_greetme('Joe');"  
 Hello Joe
@@ -80,3 +81,18 @@ Setting local variables:
     <?php
     hello_set_local_var('test', 'Greetings');
     echo "$test\n";
+
+
+# Tutorial 3
+
+http://devzone.zend.com/446/extension-writing-part-iii-resources/
+
+Resources
+
+    <?php
+
+    $person = hello_person_new("Joseph", 31);
+    var_dump($person);
+
+    hello_person_greet($person);
+

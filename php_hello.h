@@ -19,6 +19,14 @@ ZEND_END_MODULE_GLOBALS(hello)
 #define PHP_HELLO_WORLD_VERSION "1.0"
 #define PHP_HELLO_WORLD_EXTNAME "hello"
 
+typedef struct _php_hello_person {
+    char *name;
+    int name_len;
+    long age;
+} php_hello_person;
+
+#define PHP_HELLO_PERSON_RES_NAME "Person Data"
+
 PHP_MINIT_FUNCTION(hello);
 PHP_MSHUTDOWN_FUNCTION(hello);
 PHP_RINIT_FUNCTION(hello);
@@ -30,10 +38,14 @@ PHP_FUNCTION(hello_bool);
 PHP_FUNCTION(hello_null);
 PHP_FUNCTION(hello_greetme);
 PHP_FUNCTION(hello_add);
+// Part 2
 PHP_FUNCTION(hello_array);
 PHP_FUNCTION(hello_array_strings);
 PHP_FUNCTION(hello_get_global_var);
 PHP_FUNCTION(hello_set_local_var);
+// Part 3
+PHP_FUNCTION(hello_person_new);
+PHP_FUNCTION(hello_person_greet);
 
 extern zend_module_entry hello_module_entry;
 #define phpext_hello_prt &hello_module_entry

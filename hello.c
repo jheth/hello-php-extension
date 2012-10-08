@@ -6,6 +6,8 @@
 #include "php_ini.h"
 #include "php_hello.h"
 
+int le_hello_person;
+
 ZEND_DECLARE_MODULE_GLOBALS(hello)
 
 static function_entry hello_functions[] = {
@@ -20,6 +22,8 @@ static function_entry hello_functions[] = {
     PHP_FE(hello_array_strings, NULL)
     PHP_FE(hello_get_global_var, NULL)
     PHP_FE(hello_set_local_var, NULL)
+    PHP_FE(hello_person_new, NULL)
+    PHP_FE(hello_person_greet, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -64,6 +68,8 @@ PHP_RINIT_FUNCTION(hello)
 
 PHP_MINIT_FUNCTION(hello)
 {
+    le_hello_person = zend_register_list_destructors_ex(NULL, NULL,
+        PHP_HELLO_PERSON_RES_NAME, module_number);
     ZEND_INIT_MODULE_GLOBALS(hello, php_hello_init_globals, NULL);
     REGISTER_INI_ENTRIES();
 
@@ -140,6 +146,8 @@ PHP_FUNCTION(hello_add)
         RETURN_DOUBLE(a + b);
     }
 }
+
+// Part 2
 
 PHP_FUNCTION(hello_array)
 {
@@ -245,3 +253,54 @@ PHP_FUNCTION(hello_set_local_var)
 
     RETURN_TRUE;
 }
+
+// Part 3
+
+PHP_FUNCTION(hello_person_new)
+{
+    php_hello_person *person;
+    char *name;
+    int name_len;
+    long age;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &name, &name_len, &age) == FAILURE) {
+        RETURN_FALSE;
+    }
+
+    if (name_len < 1) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "No name given, person resource not created.", age);
+        RETURN_FALSE;
+    }
+
+    if (age < 0 || age > 255) {
+        php_error_docref(NULL TSRMLS_CC, E_WARNING, "Nonsense age (%d) given, person resource not created.", age);
+        RETURN_FALSE;
+    }
+
+    person = emalloc(sizeof(php_hello_person));
+    person->name = estrndup(name, name_len);
+    person->name_len = name_len;
+    person->age = age;
+
+    ZEND_REGISTER_RESOURCE(return_value, person, le_hello_person);
+}
+
+PHP_FUNCTION(hello_person_greet)
+{
+    php_hello_person *person;
+    zval *zperson;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &zperson) == FAILURE) {
+        RETURN_FALSE;
+    }
+
+    ZEND_FETCH_RESOURCE(person, php_hello_person*, &zperson, -1,
+        PHP_HELLO_PERSON_RES_NAME, le_hello_person);
+
+    php_printf("Hello ");
+    PHPWRITE(person->name, person->name_len);
+    php_printf("!\nAccording to my records, you are %d years old.\n", person->age);
+
+    RETURN_TRUE;
+}
+
